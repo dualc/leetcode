@@ -16,7 +16,6 @@ class Solution(object):
         if root and root.val == sum and root.left is None and root.right is None:
             return True
         else:
-            left = self.hasPathSum(root.left,sum-root.val)
-            right = self.hasPathSum(root.right,sum-root.val)
+            left = self.hasPathSum(root.left, sum - root.val)
+            right = self.hasPathSum(root.right, sum - root.val)
             return left or right
-        

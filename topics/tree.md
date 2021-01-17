@@ -224,7 +224,7 @@ Accepted
 ### Accept
 Accepted
 
-# 106. Construct Binary Tree from Inorder and Postorder Traversal
+## 106. Construct Binary Tree from Inorder and Postorder Traversal
 ### 题目
 由后序和中序还原一棵二叉树
 ### 思路
@@ -234,7 +234,7 @@ Accepted
 ### Accept
 Accepted
 
-# 106. Binary Tree Level Order Traversal II
+## 107. Binary Tree Level Order Traversal II
 ### 题目
 层次遍历树
 ### 思路
@@ -242,7 +242,7 @@ Accepted
 ### Accept
 Accepted
 
-# 108. Convert Sorted Array to Binary Search Tree
+## 108. Convert Sorted Array to Binary Search Tree
 ### 题目
 将有序数组转换成一棵二叉搜索树
 ### 思路
@@ -250,7 +250,7 @@ Accepted
 ### Accept
 Accepted
 
-# 110. Balanced Binary Tree
+## 110. Balanced Binary Tree
 ### 题目
 判断树是否是平衡二叉树
 ### 思路
@@ -258,7 +258,7 @@ Accepted
 ### Accept
 Accepted
 
-# 110. Minimum Depth of Binary Tree
+## 110. Minimum Depth of Binary Tree
 ### 题目
 计算树的最小高度
 ### 思路
@@ -266,10 +266,152 @@ Accepted
 ### Accept
 Accepted
 
-# 112. Path Sum
+## 112. Path Sum
 ### 题目
 求出一条路径，路径之和等于给定值
 ### 思路
 sum每次减去节点的值，然后去左右子树判断是否满足sum
 ### Accept
 Accepted
+
+## 113. Path Sum II
+### 题目
+求出路径之和等于给定值的所有路径
+### 思路
+思路和112一样，sum每次减去节点的值，然后去左右子树判断是否满足sum。
+计算出左右子树的路径，然后合并
+### Accept
+Accepted
+
+## 114. Flatten Binary Tree to Linked List
+### 题目
+将二叉树扁平成链表
+### 思路
+遍历树，将每棵树转换成链表。递归解题思路非常符合直觉，先处理左右子树，
+然后如果左子树存在，则将右子树连接到左子树的末尾，然后递归返回，处理上层树
+```python
+class Solution1(object):
+    def flatten(self, root):
+        """
+        :type root: TreeNode
+        :rtype: None Do not return anything, modify root in-place instead.
+        """
+        if not root:
+            return
+        self.flatten(root.left)
+        self.flatten(root.right)
+        if root.left:
+            tmp = root.left
+            while tmp.right!=None:
+                tmp = tmp.right
+            tmp.right = root.right
+            root.right=root.left
+            root.left=None
+```
+优化，不用每次寻找左子树的末尾节点，每次返回末尾节点
+```python
+class Solution2(object):
+    def flatten(self, root):
+        """
+        :type root: TreeNode
+        :rtype: None Do not return anything, modify root in-place instead.
+        """
+
+        def _flatten(root):
+            if not root:
+                return None
+            if root.left is None and root.right is None:
+                return root
+            left = _flatten(root.left)
+            right = _flatten(root.right)
+            if left:
+                left.right = root.right
+                root.right = root.left
+                root.left = None
+            return right or left
+
+        _flatten(root)
+```
+### Accept
+Accepted
+
+## 116. Populating Next Right Pointers in Each Node
+### 题目
+将完美二叉树每个结点指向它右边的的节点
+### 思路
+没想出来，参考了下别的解法。
+解法1是别人写的，每二层一处理，利用上层节点平移，感觉还挺巧妙的，
+解法2是根据解法1的理解写的，没有别人简洁。
+解法3是根据层次遍历写的。这个应该是通解，可以解117
+### Accept
+No
+
+## 117. Populating Next Right Pointers in Each Node II
+### 题目
+将二叉树每个结点指向它右边的的节点，和116的区别是，树不一定是完美二叉树
+### 思路
+解法1 写的很纠结，那时候没想到这种层次遍历写法
+解法2 层次遍历，完美通吃116和117
+### Accept
+Accept
+
+## 124. Binary Tree Maximum Path Sum
+### 题目
+求二叉树的最大路径
+### 思路
+没有写出来，一开始题目也没有太理解。参考了下别人的解法，
+递归，计算每棵树的最大路径：
+ 1. 首先计算左右子树路径
+ 2. 选择左右子树的最大路径加上根节点的路径，就是当前子树的最大路径，返回路径值
+### Accept
+No Accept
+
+## 129. Sum Root to Leaf Numbers
+### 题目
+求出从根到叶子组成的数的和
+### 思路
+### 解法1
+递归，从根递归到叶子，计算出每棵树的和:
+ 1. 计算左右子树的和
+ 2. 计算当前子树的和：左右子树的和相加
+
+### 解法2
+求出所有从根到叶子组合成的字符串
+最后得到是一个字符串数组，转换成数字，求它们的和。相比解法1更直观一些
+
+## 144. Binary Tree Preorder Traversal
+### 题目
+树的前序遍历
+
+### Accept
+Accept
+
+## 145. Binary Tree Postorder Traversal
+### 题目
+树的后序遍历
+### Accept
+Accept
+
+## 173. Binary Search Tree Iterator
+### 题目
+按照中序实现一个二叉树迭代器
+### 思路
+可以按照树实现的中序遍历算法实现。递归和使用栈两种方式。
+### 递归
+先中序遍历一遍，保存在数组中，然后用迭代器访问。
+递归不受控，无论访问什么，首先得先递归保存节点。比如第一次next就得先遍历一遍。
+### 栈
+以栈的方式遍历树，遍历到那里是那里，相对递归法时间复杂度底。
+### Accept
+Accept
+
+## 199. Binary Tree Right Side View
+### 题目
+从右边看一棵树，从上到下看到的节点
+### 思路
+#### 层次遍历
+层次遍历，取每层得最后一个节点。跟116和117相似
+#### 递归
+求出每层的节点，最后每层取最后一个
+### Accept
+Accept
